@@ -11,7 +11,7 @@ DB_PASSWORD := postgres
 DB_NAME := postgres
 DB_VERSION := 9.6
 
-SCRIPT := bookstore
+SCRIPT := president
 
 help: ## Show this help
 	@echo "${NAMESPACE}/${NAME}"
