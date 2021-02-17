@@ -1,4 +1,4 @@
-.PHONY: run db/start db/stop db/remove
+.PHONY: run/script run/interactive db/start db/stop db/remove
 .DEFAULT_GOAL := help
 
 NAMESPACE := tomdewildt
@@ -11,7 +11,7 @@ DB_PASSWORD := postgres
 DB_NAME := postgres
 DB_VERSION := 9.6
 
-SCRIPT := president
+SCRIPT := bookstore
 
 help: ## Show this help
 	@echo "${NAMESPACE}/${NAME}"
