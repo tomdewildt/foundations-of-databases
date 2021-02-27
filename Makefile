@@ -9,9 +9,9 @@ DB_PORT := 5432
 DB_USER := postgres
 DB_PASSWORD := postgres
 DB_NAME := postgres
-DB_VERSION := 9.6
+DB_VERSION := latest
 
-SCRIPT := president
+SCRIPT := exercises
 
 help: ## Show this help
 	@echo "${NAMESPACE}/${NAME}"
