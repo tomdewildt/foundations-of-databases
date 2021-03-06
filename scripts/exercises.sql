@@ -197,7 +197,7 @@ SELECT pres_id
 SELECT pres_id, round(avg(nr_children)) AS average
     FROM president.pres_marriage
         GROUP BY pres_id
-            HAVING min(spouse_age) < 30 AND round(avg(nr_children)) > 4
+            HAVING max(spouse_age) < 30 AND round(avg(nr_children)) > 4
                 ORDER BY pres_id;
 
 ---
