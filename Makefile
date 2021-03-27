@@ -11,7 +11,7 @@ DB_PASSWORD := postgres
 DB_NAME := postgres
 DB_VERSION := latest
 
-SCRIPT := exercises
+SCRIPT := exercises-continued
 
 help: ## Show this help
 	@echo "${NAMESPACE}/${NAME}"
