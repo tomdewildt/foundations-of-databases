@@ -349,27 +349,19 @@ HAVING count(*) = (SELECT max(ecc.count) FROM election_candiate_count ecc);
 --- Set 4 - Question 5
 ---
 
-SELECT p.name, p.birth_year, (SELECT a1.year_inaugurated
-                              FROM president.administration a1
-                              WHERE a1.pres_id = max(p.id)
-                              ORDER BY a1.year_inaugurated
-                              LIMIT 1) AS "first", (SELECT a1.year_inaugurated
-                                                    FROM president.administration a1
-                                                    WHERE a1.pres_id = max(p.id)
-                                                    ORDER BY a1.year_inaugurated
-                                                    LIMIT 1 OFFSET 1) AS "second", (SELECT a1.year_inaugurated
-                                                                                    FROM president.administration a1
-                                                                                    WHERE a1.pres_id = max(p.id)
-                                                                                    ORDER BY a1.year_inaugurated
-                                                                                    LIMIT 1 OFFSET 2) AS "third", (SELECT a1.year_inaugurated
-                                                                                                                   FROM president.administration a1
-                                                                                                                   WHERE a1.pres_id = max(p.id)
-                                                                                                                   ORDER BY a1.year_inaugurated
-                                                                                                                   LIMIT 1 OFFSET 3) AS "fourth"
+SELECT DISTINCT p.name,
+                p.birth_year,
+                nth_value(a1.year_inaugurated, 1) OVER w AS "first",
+                nth_value(a1.year_inaugurated, 2) OVER w AS "second",
+                nth_value(a1.year_inaugurated, 3) OVER w AS "third",
+                nth_value(a1.year_inaugurated, 4) OVER w AS "fourth"
 FROM president.president p
-JOIN president.administration a ON p.id = a.pres_id
-GROUP BY p.name, p.birth_year
-HAVING count(*) = 4;
+JOIN president.administration a1 ON p.id = a1.pres_id
+WHERE p.id IN (SELECT a2.pres_id
+               FROM president.administration a2
+               GROUP BY a2.pres_id
+               HAVING count(*) = 4)
+WINDOW w AS (PARTITION BY a1.pres_id);
 
 ---
 --- Set 4 - Question 6
