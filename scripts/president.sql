@@ -10,13 +10,10 @@ CREATE SCHEMA president;
 -- Name: delete_on_unnatural_death_age(), Type: FUNCTION, Schema: president
 --
 
-CREATE FUNCTION president.delete_on_unnatural_death_age() RETURNS void
-    LANGUAGE sql
-    AS $$
-DELETE
-FROM president
-WHERE death_age > 900;
-$$;
+CREATE OR REPLACE FUNCTION president.delete_on_unnatural_death_age()
+RETURNS void AS $$
+    DELETE FROM president.president WHERE death_age > 900;
+$$ LANGUAGE sql;
 
 --
 -- Name: admin_vpres, Type: TABLE, Schema: president
@@ -56,13 +53,12 @@ COMMENT ON TABLE president.administration IS 'Name of president, administration 
 -- Name: administration_id, Type: SEQUENCE, Schema: president
 --
 
-CREATE SEQUENCE president.administration_id
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+CREATE SEQUENCE president.administration_id AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 --
 -- Name: administration_id, Type: SEQUENCE_OWNED_BY, Schema: president
@@ -160,13 +156,12 @@ COMMENT ON TABLE president.president IS 'President name, birth year etc.';
 -- Name: president_id, Type: SEQUENCE, Schema: president
 --
 
-CREATE SEQUENCE president.president_id
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+CREATE SEQUENCE president.president_id AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 --
 -- Name: president_id, Type: SEQUENCE_OWNED_BY, Schema: president
@@ -203,13 +198,12 @@ COMMENT ON TABLE president.state IS 'States, added in year and under which presi
 -- Name: state_id, Type: SEQUENCE, Schema: president
 --
 
-CREATE SEQUENCE president.state_id
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+CREATE SEQUENCE president.state_id AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 --
 -- Name: state_id, Type: SEQUENCE_OWNED_BY, Schema: president
@@ -228,16 +222,15 @@ ALTER TABLE ONLY president.state ALTER COLUMN id SET DEFAULT nextval('president.
 --
 
 CREATE VIEW president.recent_presidents AS
-    SELECT p.id,
-        p.name,
-        p.birth_year,
-        p.years_served,
-        p.death_age,
-        p.party,
-        s.name AS state_name
-    FROM (president.president p
-        JOIN president.state s ON ((p.state_id_born = s.id)))
-    WHERE (p.birth_year > 1880);
+SELECT p.id,
+       p.name,
+       p.birth_year,
+       p.years_served,
+       p.death_age,
+       p.party,
+       s.name AS state_name
+FROM (president.president p JOIN president.state s ON ((p.state_id_born = s.id)))
+WHERE (p.birth_year > 1880);
 
 --
 -- Name: recent_presidents, Type: COMMENT, Schema: president
